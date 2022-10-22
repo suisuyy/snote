@@ -162,7 +162,7 @@ let control = {
         return Boolean(model.github.token);
     },
     async getTokenByCode(code) {
-        let res = (await fetch(CONSTANT.ENV.corsproxy + '/https://github.com/login/oauth/access_token?client_id=62bae466424e9145c0a5&client_secret=d373d9ebf716e36988e31f6687920706af76fbdd&state=snote&code=' + code, {
+        let res = (await fetch(CONSTANT.ENV.corsproxy + 'https://github.com/login/oauth/access_token?client_id=62bae466424e9145c0a5&client_secret=d373d9ebf716e36988e31f6687920706af76fbdd&state=snote&code=' + code, {
             method: "POST",
             headers: {
                 Accept: 'application/vnd.github+json',
