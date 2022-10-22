@@ -1,14 +1,16 @@
 {
-  "name": "example",
+  "name": "snote",
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "webpack serve --host 0.0.0.0 --client-web-socket-url ws://localhost:8080/ws --watch-options-poll",
-    "build": "webpack ",
-    "preview": "vite preview"
+    "watch": "webpack --watch",
+    "dev": "webpack serve ",
+    "build": "webpack  --devtool source-map",
+    "preview": "echo commingsoon"
   },
   "devDependencies": {
     "html-webpack-plugin": "^5.5.0",
+    "source-map-loader": "^4.0.1",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.11.1"
