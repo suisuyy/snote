@@ -5,7 +5,9 @@ const ENV = {
         test_token: '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',
         repo_path: '/repos/suisuyy/Github-API-Testing/contents'
     },
-    corsproxy: 'https://thingproxy.freeboard.io/fetch',
+    // corsproxy: 'https://thingproxy.freeboard.io/fetch',
+    corsproxy: 'https://corsp.suisuytest.workers.dev',
+
 };
 
 
