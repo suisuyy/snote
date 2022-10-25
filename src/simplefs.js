@@ -32,7 +32,7 @@ async function ls(token, repopath) {
         //if res.length undefined,this means its a file
         console.log(repopath, res)
 
-        return [res];
+        return res;
     }
 
     let allDirs = res.filter(f => f.type === 'dir');

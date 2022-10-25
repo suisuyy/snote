@@ -7,6 +7,7 @@ const ENV = {
     },
     // corsproxy: 'https://thingproxy.freeboard.io/fetch',
     corsproxy: 'https://corsp.suisuytest.workers.dev/?',
+    ghproxy:'https://ghproxy.com/'
 
 };
 

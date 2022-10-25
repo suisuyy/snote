@@ -3,9 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "watch": "webpack --watch",
-    "dev": "webpack serve ",
-    "build": "webpack  --devtool source-map",
+    "watch": "npx webpack --watch",
+    "dev": "npx webpack serve ",
+    "build": "npx webpack  --devtool source-map",
     "preview": "echo commingsoon"
   },
   "devDependencies": {

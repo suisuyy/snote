@@ -17,11 +17,6 @@ function main() {
 
 }
 
-let extensions = [
-    EditorView.updateListener.of(function (e) {
-        console.log(e.state.doc.toString());
-    }),
-]
 
 function createJSEditor(element) {
     let editor = new EditorView({
@@ -46,10 +41,11 @@ function createMDEditor(element, doc, listenerFunctions) {
     // for code blocks, using @codemirror/language-data to
     // look up the appropriate dynamic import.
     let editroInitState = {
-        doc: doc || "# Hello this Snote by Suisuy\nhere are some basic usage\n```javascript\nlet x = 'y'\n```",
+        doc: doc || "# Hello this Snote by Suisuy\nhere are some basic usage\ntry login first\n\n write you js code like this,\ntry to double click to run current line code\n```javascript\n3*4 //double click me\n```",
         extensions: [
             basicSetup,
             keymap.of([indentWithTab]),
+            EditorView.lineWrapping,
             markdown({ codeLanguages: languages }),
             javascriptLanguage.data.of({
                 autocomplete: scopeCompletionSource(globalThis),

@@ -27,6 +27,10 @@ let model = {
         client_id: CONSTANT.ENV.github_app.client_id,
         client_secret: CONSTANT.ENV.github_app.client_secret,
     },
+    urlBar: {
+        url: '',
+        params: {},
+    },
     editor: {
         value: '',
         changed: false,
@@ -118,6 +122,16 @@ let MenuView = {
     render() { }
 }
 
+let urlView = {
+    init() {
+        window.addEventListener('popstate', evt => {
+            let pathname = new URLSearchParams(location.search).get('pathname')
+            control.updatePathname(pathname, false);
+        });
+    }
+}
+
+
 let control = {
     async init() {
         this.debug();
@@ -127,11 +141,18 @@ let control = {
         editorView.init();
         fmView.init();
         MenuView.init();
+        urlView.init();
 
-
+        if (model.urlBar.params.pathname) {
+            control.updatePathname();
+        }
         this.intervalRunner(30000)
     },
     async initModel() {
+        model.urlBar.url = location.href;
+        model.urlBar.params = Object.fromEntries(new URLSearchParams(location.search));
+
+
         if (new URL(location.href).searchParams.get("code")) {
             console.log('try to get token');
             await this.getTokenByCode(new URL(location.href).searchParams.get("code"));
@@ -182,7 +203,7 @@ let control = {
     async ls(path) {
         console.log(`ls(${path})`);
         let res;
-        if (path === '/' || path === undefined) {
+        if (path === '/' || path === undefined || path === null) {
             res = await simplefs.getRepos(model.github.token, model.github.user.login);
         }
         else if (path.split('/').length < 3) {
@@ -203,6 +224,40 @@ let control = {
         return res;
 
     },
+    async updatePathname(pathname = model.urlBar.params.pathname, push = true) {
+        model.urlBar.params.pathname = pathname;
+        let res = await control.ls(pathname);  //if pathname is file ls() return a file object
+        if (res.type === 'file') {
+            let file = res;
+            let fileContent = await simplefs.cat(file);
+            console.log(fileContent);
+            control.openDocstr(fileContent)
+            model.editor.currentFile = file;
+
+            let tmp = pathname.split('/');
+            tmp.pop();
+            pathname = tmp.join('/');
+            let flist = await control.ls(pathname)
+            model.fm.filedirDataList = flist;
+            model.fm.wd = pathname;
+            fmView.render(fmView.fmContainer, {
+                clickListener: control.openDoc
+            }, model.fm.filedirDataList);
+            return;
+        }
+        model.fm.filedirDataList = res;
+        model.fm.wd = pathname;
+        fmView.render(fmView.fmContainer, {
+            clickListener: control.openDoc
+        }, model.fm.filedirDataList);
+
+        if (push) {
+            history.pushState({}, '', `?pathname=${pathname}`);
+
+        }
+
+
+    },
 
     openDocstr(str) {
         model.editor.value = str;
@@ -210,27 +265,19 @@ let control = {
     },
     async openDoc(file) {
         if (file.type === 'file') {
-            let fileContent = await simplefs.cat(file);
-            console.log(fileContent);
-            control.openDocstr(fileContent)
-            model.editor.currentFile = file;
+            let repoName = file.html_url.split('/')[4];
+            let pathname = `/${repoName}/${file.path}`;
+            control.updatePathname(pathname);
 
         }
         else if (file.type === 'dir') {
-            console.log(`open dir ${file.name}`);
-            model.fm.wd += `/${file.name}`;
-            model.fm.filedirDataList = await control.ls(model.fm.wd);
-            fmView.render(fmView.fmContainer, {
-                clickListener: control.openDoc
-            }, model.fm.filedirDataList);
+            let repoName = file.html_url.split('/')[4];
+            let pathname = `/${repoName}/${file.path}`;
+            control.updatePathname(pathname);
         }
         else if (file.type === 'repo') {
             console.log(`open repo ${file.name}`);
-            model.fm.filedirDataList = await control.ls('/' + file.name);
-            model.fm.wd = '/' + file.name;
-            fmView.render(fmView.fmContainer, {
-                clickListener: control.openDoc
-            }, model.fm.filedirDataList);
+            control.updatePathname(`/${file.name}`);
 
         }
 
