@@ -1909,7 +1909,7 @@ async function createDirFileList(fArray, element, listenerFunctions) {
 
     for (const f of fArray) {
         let li = document.createElement('li');
-        li.innerHTML = f.name;
+        li.innerHTML = f.name + '   ' + f.sha;
         li.classList.add(['fli'])
         if (f.type === 'dir') {
             li.classList.add('dirli')
@@ -1956,8 +1956,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _octokit_core___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @octokit/core/ */ "./node_modules/@octokit/core/dist-web/index.js");
-/* harmony import */ var _constant_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./constant.js */ "./src/constant.js");
+/* harmony import */ var _octokit_core___WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @octokit/core/ */ "./node_modules/@octokit/core/dist-web/index.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils.js */ "./src/utils.js");
+/* harmony import */ var _constant_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./constant.js */ "./src/constant.js");
+/* harmony import */ var js_base64__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! js-base64 */ "./node_modules/js-base64/base64.mjs");
+
 
 // import { Octokit } from "/public/lib/@octokit/core/dist-web";
 
@@ -1966,9 +1969,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 async function main(t) {
     console.log('start simplefs.main()');
-    window.Octokit = _octokit_core___WEBPACK_IMPORTED_MODULE_1__.Octokit
+    window.Octokit = _octokit_core___WEBPACK_IMPORTED_MODULE_3__.Octokit
 
     let repopath = '/repos/suisuyy/Github-API-Testing/contents'
     let newfilepath = '/atest4'
@@ -1981,16 +1985,17 @@ async function main(t) {
 
 // Between 1 - 100 MB: Only the raw or object custom media types are supported.Both will work as normal, except that when using the object media type, the content field will be an empty string and the encoding field will be "none".To get the contents of these larger files, use the raw media type.
 async function ls(token, repopath) {
+    repopath = repopath + `?${Math.random()}`
     console.log(`ls('${token}', '${repopath}')`)
 
-    const octokit = new _octokit_core___WEBPACK_IMPORTED_MODULE_1__.Octokit({
+    const octokit = new _octokit_core___WEBPACK_IMPORTED_MODULE_3__.Octokit({
         auth: token,
     })
     // res will be array of fileobj
     let { data: res } = await octokit.request(`GET ${repopath}`)
     if (res.length === undefined) {
         //if res.length undefined,this means its a file
-        console.log(repopath, res)
+        console.log(repopath, res, js_base64__WEBPACK_IMPORTED_MODULE_2__.Base64.decode(res.content));
 
         return res;
     }
@@ -2009,7 +2014,7 @@ async function ls(token, repopath) {
 */
 function touch(token, filepath, b64file) {
     console.log(`touch('${token}', '${filepath}','${b64file}')`)
-    const octokit = new _octokit_core___WEBPACK_IMPORTED_MODULE_1__.Octokit({
+    const octokit = new _octokit_core___WEBPACK_IMPORTED_MODULE_3__.Octokit({
         auth: token,
     });
 
@@ -2033,9 +2038,9 @@ async function cat(file) {
 
     let res = await (await fetch(file.git_url, { cache: "no-cache" })).json();
     console.log(`finish cat(${file})`, res);
-    let doc = atob(res.content);
+    let doc = js_base64__WEBPACK_IMPORTED_MODULE_2__.Base64.decode(res.content);
     if (doc) {
-        console.log(`finish cat(${file.git_url})`, doc);
+        console.log(`finish simplefs.cat(${file.git_url})`, file.sha);
         return doc;
     }
 
@@ -2058,7 +2063,7 @@ async function update(token, fileurl, b64file) {
     console.log(`update('${token}', '${fileurl}','${b64file}')`)
 
     let sha = await getSha(token, fileurl)
-    const octokit = new _octokit_core___WEBPACK_IMPORTED_MODULE_1__.Octokit({
+    const octokit = new _octokit_core___WEBPACK_IMPORTED_MODULE_3__.Octokit({
         auth: token,
     });
 
@@ -2087,7 +2092,7 @@ function remove(token, filepath) {
 async function getSha(token, fileurl) {
     console.log(`getSha('${token}', '${fileurl}')`)
 
-    const octokit = new _octokit_core___WEBPACK_IMPORTED_MODULE_1__.Octokit({
+    const octokit = new _octokit_core___WEBPACK_IMPORTED_MODULE_3__.Octokit({
         auth: token,
     });
     let res = await octokit.request(`GET ${fileurl}`)
@@ -2100,7 +2105,7 @@ async function getSha(token, fileurl) {
 }
 
 async function getUser(token) {
-    const octokit = new _octokit_core___WEBPACK_IMPORTED_MODULE_1__.Octokit({
+    const octokit = new _octokit_core___WEBPACK_IMPORTED_MODULE_3__.Octokit({
         auth: token
     })
     let res = await octokit.request('GET /user', {})
@@ -2116,7 +2121,7 @@ async function getUser(token) {
     @return [repo1, repo2]
 */
 async function getRepos(token, userName) {
-    const octokit = new _octokit_core___WEBPACK_IMPORTED_MODULE_1__.Octokit({
+    const octokit = new _octokit_core___WEBPACK_IMPORTED_MODULE_3__.Octokit({
         auth: token
     })
 
@@ -2166,10 +2171,20 @@ function updateObjInStroge(name, newObj) {
     setObjToStorage(name, { ...oldObj, ...newObj });
 }
 
+function utf8_to_b64(str) {
+    return window.btoa(unescape(encodeURIComponent(str)));
+}
+
+function b64_to_utf8(str) {
+    return decodeURIComponent(escape(window.atob(str)));
+}
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
     getObjFromStorage,
     setObjToStorage,
     updateObjInStroge,
+    utf8_to_b64,
+    b64_to_utf8,
 });
 
 /***/ }),
@@ -60535,6 +60550,337 @@ function isPlainObject(o) {
 
 /***/ }),
 
+/***/ "./node_modules/js-base64/base64.mjs":
+/*!*******************************************!*\
+  !*** ./node_modules/js-base64/base64.mjs ***!
+  \*******************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Base64": () => (/* binding */ gBase64),
+/* harmony export */   "VERSION": () => (/* binding */ VERSION),
+/* harmony export */   "atob": () => (/* binding */ _atob),
+/* harmony export */   "atobPolyfill": () => (/* binding */ atobPolyfill),
+/* harmony export */   "btoa": () => (/* binding */ _btoa),
+/* harmony export */   "btoaPolyfill": () => (/* binding */ btoaPolyfill),
+/* harmony export */   "btou": () => (/* binding */ btou),
+/* harmony export */   "decode": () => (/* binding */ decode),
+/* harmony export */   "encode": () => (/* binding */ encode),
+/* harmony export */   "encodeURI": () => (/* binding */ encodeURI),
+/* harmony export */   "encodeURL": () => (/* binding */ encodeURI),
+/* harmony export */   "extendBuiltins": () => (/* binding */ extendBuiltins),
+/* harmony export */   "extendString": () => (/* binding */ extendString),
+/* harmony export */   "extendUint8Array": () => (/* binding */ extendUint8Array),
+/* harmony export */   "fromBase64": () => (/* binding */ decode),
+/* harmony export */   "fromUint8Array": () => (/* binding */ fromUint8Array),
+/* harmony export */   "isValid": () => (/* binding */ isValid),
+/* harmony export */   "toBase64": () => (/* binding */ encode),
+/* harmony export */   "toUint8Array": () => (/* binding */ toUint8Array),
+/* harmony export */   "utob": () => (/* binding */ utob),
+/* harmony export */   "version": () => (/* binding */ version)
+/* harmony export */ });
+/**
+ *  base64.ts
+ *
+ *  Licensed under the BSD 3-Clause License.
+ *    http://opensource.org/licenses/BSD-3-Clause
+ *
+ *  References:
+ *    http://en.wikipedia.org/wiki/Base64
+ *
+ * @author Dan Kogai (https://github.com/dankogai)
+ */
+const version = '3.7.2';
+/**
+ * @deprecated use lowercase `version`.
+ */
+const VERSION = version;
+const _hasatob = typeof atob === 'function';
+const _hasbtoa = typeof btoa === 'function';
+const _hasBuffer = typeof Buffer === 'function';
+const _TD = typeof TextDecoder === 'function' ? new TextDecoder() : undefined;
+const _TE = typeof TextEncoder === 'function' ? new TextEncoder() : undefined;
+const b64ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+const b64chs = Array.prototype.slice.call(b64ch);
+const b64tab = ((a) => {
+    let tab = {};
+    a.forEach((c, i) => tab[c] = i);
+    return tab;
+})(b64chs);
+const b64re = /^(?:[A-Za-z\d+\/]{4})*?(?:[A-Za-z\d+\/]{2}(?:==)?|[A-Za-z\d+\/]{3}=?)?$/;
+const _fromCC = String.fromCharCode.bind(String);
+const _U8Afrom = typeof Uint8Array.from === 'function'
+    ? Uint8Array.from.bind(Uint8Array)
+    : (it, fn = (x) => x) => new Uint8Array(Array.prototype.slice.call(it, 0).map(fn));
+const _mkUriSafe = (src) => src
+    .replace(/=/g, '').replace(/[+\/]/g, (m0) => m0 == '+' ? '-' : '_');
+const _tidyB64 = (s) => s.replace(/[^A-Za-z0-9\+\/]/g, '');
+/**
+ * polyfill version of `btoa`
+ */
+const btoaPolyfill = (bin) => {
+    // console.log('polyfilled');
+    let u32, c0, c1, c2, asc = '';
+    const pad = bin.length % 3;
+    for (let i = 0; i < bin.length;) {
+        if ((c0 = bin.charCodeAt(i++)) > 255 ||
+            (c1 = bin.charCodeAt(i++)) > 255 ||
+            (c2 = bin.charCodeAt(i++)) > 255)
+            throw new TypeError('invalid character found');
+        u32 = (c0 << 16) | (c1 << 8) | c2;
+        asc += b64chs[u32 >> 18 & 63]
+            + b64chs[u32 >> 12 & 63]
+            + b64chs[u32 >> 6 & 63]
+            + b64chs[u32 & 63];
+    }
+    return pad ? asc.slice(0, pad - 3) + "===".substring(pad) : asc;
+};
+/**
+ * does what `window.btoa` of web browsers do.
+ * @param {String} bin binary string
+ * @returns {string} Base64-encoded string
+ */
+const _btoa = _hasbtoa ? (bin) => btoa(bin)
+    : _hasBuffer ? (bin) => Buffer.from(bin, 'binary').toString('base64')
+        : btoaPolyfill;
+const _fromUint8Array = _hasBuffer
+    ? (u8a) => Buffer.from(u8a).toString('base64')
+    : (u8a) => {
+        // cf. https://stackoverflow.com/questions/12710001/how-to-convert-uint8-array-to-base64-encoded-string/12713326#12713326
+        const maxargs = 0x1000;
+        let strs = [];
+        for (let i = 0, l = u8a.length; i < l; i += maxargs) {
+            strs.push(_fromCC.apply(null, u8a.subarray(i, i + maxargs)));
+        }
+        return _btoa(strs.join(''));
+    };
+/**
+ * converts a Uint8Array to a Base64 string.
+ * @param {boolean} [urlsafe] URL-and-filename-safe a la RFC4648 §5
+ * @returns {string} Base64 string
+ */
+const fromUint8Array = (u8a, urlsafe = false) => urlsafe ? _mkUriSafe(_fromUint8Array(u8a)) : _fromUint8Array(u8a);
+// This trick is found broken https://github.com/dankogai/js-base64/issues/130
+// const utob = (src: string) => unescape(encodeURIComponent(src));
+// reverting good old fationed regexp
+const cb_utob = (c) => {
+    if (c.length < 2) {
+        var cc = c.charCodeAt(0);
+        return cc < 0x80 ? c
+            : cc < 0x800 ? (_fromCC(0xc0 | (cc >>> 6))
+                + _fromCC(0x80 | (cc & 0x3f)))
+                : (_fromCC(0xe0 | ((cc >>> 12) & 0x0f))
+                    + _fromCC(0x80 | ((cc >>> 6) & 0x3f))
+                    + _fromCC(0x80 | (cc & 0x3f)));
+    }
+    else {
+        var cc = 0x10000
+            + (c.charCodeAt(0) - 0xD800) * 0x400
+            + (c.charCodeAt(1) - 0xDC00);
+        return (_fromCC(0xf0 | ((cc >>> 18) & 0x07))
+            + _fromCC(0x80 | ((cc >>> 12) & 0x3f))
+            + _fromCC(0x80 | ((cc >>> 6) & 0x3f))
+            + _fromCC(0x80 | (cc & 0x3f)));
+    }
+};
+const re_utob = /[\uD800-\uDBFF][\uDC00-\uDFFFF]|[^\x00-\x7F]/g;
+/**
+ * @deprecated should have been internal use only.
+ * @param {string} src UTF-8 string
+ * @returns {string} UTF-16 string
+ */
+const utob = (u) => u.replace(re_utob, cb_utob);
+//
+const _encode = _hasBuffer
+    ? (s) => Buffer.from(s, 'utf8').toString('base64')
+    : _TE
+        ? (s) => _fromUint8Array(_TE.encode(s))
+        : (s) => _btoa(utob(s));
+/**
+ * converts a UTF-8-encoded string to a Base64 string.
+ * @param {boolean} [urlsafe] if `true` make the result URL-safe
+ * @returns {string} Base64 string
+ */
+const encode = (src, urlsafe = false) => urlsafe
+    ? _mkUriSafe(_encode(src))
+    : _encode(src);
+/**
+ * converts a UTF-8-encoded string to URL-safe Base64 RFC4648 §5.
+ * @returns {string} Base64 string
+ */
+const encodeURI = (src) => encode(src, true);
+// This trick is found broken https://github.com/dankogai/js-base64/issues/130
+// const btou = (src: string) => decodeURIComponent(escape(src));
+// reverting good old fationed regexp
+const re_btou = /[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF]{2}|[\xF0-\xF7][\x80-\xBF]{3}/g;
+const cb_btou = (cccc) => {
+    switch (cccc.length) {
+        case 4:
+            var cp = ((0x07 & cccc.charCodeAt(0)) << 18)
+                | ((0x3f & cccc.charCodeAt(1)) << 12)
+                | ((0x3f & cccc.charCodeAt(2)) << 6)
+                | (0x3f & cccc.charCodeAt(3)), offset = cp - 0x10000;
+            return (_fromCC((offset >>> 10) + 0xD800)
+                + _fromCC((offset & 0x3FF) + 0xDC00));
+        case 3:
+            return _fromCC(((0x0f & cccc.charCodeAt(0)) << 12)
+                | ((0x3f & cccc.charCodeAt(1)) << 6)
+                | (0x3f & cccc.charCodeAt(2)));
+        default:
+            return _fromCC(((0x1f & cccc.charCodeAt(0)) << 6)
+                | (0x3f & cccc.charCodeAt(1)));
+    }
+};
+/**
+ * @deprecated should have been internal use only.
+ * @param {string} src UTF-16 string
+ * @returns {string} UTF-8 string
+ */
+const btou = (b) => b.replace(re_btou, cb_btou);
+/**
+ * polyfill version of `atob`
+ */
+const atobPolyfill = (asc) => {
+    // console.log('polyfilled');
+    asc = asc.replace(/\s+/g, '');
+    if (!b64re.test(asc))
+        throw new TypeError('malformed base64.');
+    asc += '=='.slice(2 - (asc.length & 3));
+    let u24, bin = '', r1, r2;
+    for (let i = 0; i < asc.length;) {
+        u24 = b64tab[asc.charAt(i++)] << 18
+            | b64tab[asc.charAt(i++)] << 12
+            | (r1 = b64tab[asc.charAt(i++)]) << 6
+            | (r2 = b64tab[asc.charAt(i++)]);
+        bin += r1 === 64 ? _fromCC(u24 >> 16 & 255)
+            : r2 === 64 ? _fromCC(u24 >> 16 & 255, u24 >> 8 & 255)
+                : _fromCC(u24 >> 16 & 255, u24 >> 8 & 255, u24 & 255);
+    }
+    return bin;
+};
+/**
+ * does what `window.atob` of web browsers do.
+ * @param {String} asc Base64-encoded string
+ * @returns {string} binary string
+ */
+const _atob = _hasatob ? (asc) => atob(_tidyB64(asc))
+    : _hasBuffer ? (asc) => Buffer.from(asc, 'base64').toString('binary')
+        : atobPolyfill;
+//
+const _toUint8Array = _hasBuffer
+    ? (a) => _U8Afrom(Buffer.from(a, 'base64'))
+    : (a) => _U8Afrom(_atob(a), c => c.charCodeAt(0));
+/**
+ * converts a Base64 string to a Uint8Array.
+ */
+const toUint8Array = (a) => _toUint8Array(_unURI(a));
+//
+const _decode = _hasBuffer
+    ? (a) => Buffer.from(a, 'base64').toString('utf8')
+    : _TD
+        ? (a) => _TD.decode(_toUint8Array(a))
+        : (a) => btou(_atob(a));
+const _unURI = (a) => _tidyB64(a.replace(/[-_]/g, (m0) => m0 == '-' ? '+' : '/'));
+/**
+ * converts a Base64 string to a UTF-8 string.
+ * @param {String} src Base64 string.  Both normal and URL-safe are supported
+ * @returns {string} UTF-8 string
+ */
+const decode = (src) => _decode(_unURI(src));
+/**
+ * check if a value is a valid Base64 string
+ * @param {String} src a value to check
+  */
+const isValid = (src) => {
+    if (typeof src !== 'string')
+        return false;
+    const s = src.replace(/\s+/g, '').replace(/={0,2}$/, '');
+    return !/[^\s0-9a-zA-Z\+/]/.test(s) || !/[^\s0-9a-zA-Z\-_]/.test(s);
+};
+//
+const _noEnum = (v) => {
+    return {
+        value: v, enumerable: false, writable: true, configurable: true
+    };
+};
+/**
+ * extend String.prototype with relevant methods
+ */
+const extendString = function () {
+    const _add = (name, body) => Object.defineProperty(String.prototype, name, _noEnum(body));
+    _add('fromBase64', function () { return decode(this); });
+    _add('toBase64', function (urlsafe) { return encode(this, urlsafe); });
+    _add('toBase64URI', function () { return encode(this, true); });
+    _add('toBase64URL', function () { return encode(this, true); });
+    _add('toUint8Array', function () { return toUint8Array(this); });
+};
+/**
+ * extend Uint8Array.prototype with relevant methods
+ */
+const extendUint8Array = function () {
+    const _add = (name, body) => Object.defineProperty(Uint8Array.prototype, name, _noEnum(body));
+    _add('toBase64', function (urlsafe) { return fromUint8Array(this, urlsafe); });
+    _add('toBase64URI', function () { return fromUint8Array(this, true); });
+    _add('toBase64URL', function () { return fromUint8Array(this, true); });
+};
+/**
+ * extend Builtin prototypes with relevant methods
+ */
+const extendBuiltins = () => {
+    extendString();
+    extendUint8Array();
+};
+const gBase64 = {
+    version: version,
+    VERSION: VERSION,
+    atob: _atob,
+    atobPolyfill: atobPolyfill,
+    btoa: _btoa,
+    btoaPolyfill: btoaPolyfill,
+    fromBase64: decode,
+    toBase64: encode,
+    encode: encode,
+    encodeURI: encodeURI,
+    encodeURL: encodeURI,
+    utob: utob,
+    btou: btou,
+    decode: decode,
+    isValid: isValid,
+    fromUint8Array: fromUint8Array,
+    toUint8Array: toUint8Array,
+    extendString: extendString,
+    extendUint8Array: extendUint8Array,
+    extendBuiltins: extendBuiltins,
+};
+// makecjs:CUT //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// and finally,
+
+
+
+/***/ }),
+
 /***/ "./node_modules/style-mod/src/style-mod.js":
 /*!*************************************************!*\
   !*** ./node_modules/style-mod/src/style-mod.js ***!
@@ -60921,11 +61267,12 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _simplefs_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./simplefs.js */ "./src/simplefs.js");
-/* harmony import */ var _editor_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./editor.js */ "./src/editor.js");
-/* harmony import */ var _constant_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./constant.js */ "./src/constant.js");
-/* harmony import */ var _sfm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./sfm */ "./src/sfm.js");
-/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils.js */ "./src/utils.js");
+/* harmony import */ var js_base64__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! js-base64 */ "./node_modules/js-base64/base64.mjs");
+/* harmony import */ var _simplefs_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./simplefs.js */ "./src/simplefs.js");
+/* harmony import */ var _editor_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./editor.js */ "./src/editor.js");
+/* harmony import */ var _constant_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constant.js */ "./src/constant.js");
+/* harmony import */ var _sfm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./sfm */ "./src/sfm.js");
+/* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./utils.js */ "./src/utils.js");
 
 
 
@@ -60940,16 +61287,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-console.log(_constant_js__WEBPACK_IMPORTED_MODULE_2__["default"].ENV.github_app)
+console.log(_constant_js__WEBPACK_IMPORTED_MODULE_3__["default"].ENV.github_app)
 
 let model = {
     github: {
         user: { name: 'test' },
         token: '',
         allRepoList: [],
-        currentRepoPath: _constant_js__WEBPACK_IMPORTED_MODULE_2__["default"].ENV.github_app.repo_path,
-        client_id: _constant_js__WEBPACK_IMPORTED_MODULE_2__["default"].ENV.github_app.client_id,
-        client_secret: _constant_js__WEBPACK_IMPORTED_MODULE_2__["default"].ENV.github_app.client_secret,
+        currentRepoPath: _constant_js__WEBPACK_IMPORTED_MODULE_3__["default"].ENV.github_app.repo_path,
+        client_id: _constant_js__WEBPACK_IMPORTED_MODULE_3__["default"].ENV.github_app.client_id,
+        client_secret: _constant_js__WEBPACK_IMPORTED_MODULE_3__["default"].ENV.github_app.client_secret,
     },
     urlBar: {
         url: '',
@@ -60976,7 +61323,8 @@ let model = {
         filedirDataList: {
 
         }
-    }
+    },
+    saveTimeoutID: 0,
 }
 
 
@@ -61000,7 +61348,7 @@ let editorView = {
     },
     render(container, doc) {
         this.editor?.destroy();
-        this.editor = _editor_js__WEBPACK_IMPORTED_MODULE_1__["default"].createMDEditor(container, doc, control.editorListenerFunctions);
+        this.editor = _editor_js__WEBPACK_IMPORTED_MODULE_2__["default"].createMDEditor(container, doc, control.editorListenerFunctions);
         return this.editor;
     }
 }
@@ -61014,7 +61362,7 @@ let fmView = {
     },
     async render(container, listenerFunctions, fList) {
         this.fmContainer.innerHTML = '';
-        _sfm__WEBPACK_IMPORTED_MODULE_3__["default"].createDirFileList(fList || await control.ls(), container, listenerFunctions);
+        _sfm__WEBPACK_IMPORTED_MODULE_4__["default"].createDirFileList(fList || model.fm.filedirDataList, container, listenerFunctions);
     }
 }
 
@@ -61089,6 +61437,10 @@ let control = {
             // console.log(newDocstr);
             model.editor.value = newDocstr;
             model.editor.changed = true;
+            clearTimeout(model.saveTimeoutID);
+            model.saveTimeoutID = setTimeout(() => {
+                control.saveDoc(model.editor.currentFile, model.editor.value);
+            }, 3000);
         },
 
         cursorListener() {
@@ -61107,7 +61459,7 @@ let control = {
         return Boolean(model.github.token);
     },
     async getTokenByCode(code) {
-        let res = (await fetch(_constant_js__WEBPACK_IMPORTED_MODULE_2__["default"].ENV.corsproxy + 'https://github.com/login/oauth/access_token?client_id=62bae466424e9145c0a5&client_secret=d373d9ebf716e36988e31f6687920706af76fbdd&state=snote&code=' + code, {
+        let res = (await fetch(_constant_js__WEBPACK_IMPORTED_MODULE_3__["default"].ENV.corsproxy + 'https://github.com/login/oauth/access_token?client_id=62bae466424e9145c0a5&client_secret=d373d9ebf716e36988e31f6687920706af76fbdd&state=snote&code=' + code, {
             method: "POST",
             headers: {
                 Accept: 'application/vnd.github+json',
@@ -61117,7 +61469,7 @@ let control = {
         if (resObj?.access_token) {
             console.log('gotTokenBycode: ' + resObj?.access_token)
 
-            _utils_js__WEBPACK_IMPORTED_MODULE_4__["default"].updateObjInStroge('setting', { github_token: resObj.access_token })
+            _utils_js__WEBPACK_IMPORTED_MODULE_5__["default"].updateObjInStroge('setting', { github_token: resObj.access_token })
         }
         else {
             console.log('faild to get token');
@@ -61128,12 +61480,12 @@ let control = {
         console.log(`ls(${path})`);
         let res;
         if (path === '/' || path === undefined || path === null) {
-            res = await _simplefs_js__WEBPACK_IMPORTED_MODULE_0__["default"].getRepos(model.github.token, model.github.user.login);
+            res = await _simplefs_js__WEBPACK_IMPORTED_MODULE_1__["default"].getRepos(model.github.token, model.github.user.login);
         }
         else if (path.split('/').length < 3) {
             let urlpath = `/repos/${model.github.user.login
                 }${path}/contents`
-            res = await _simplefs_js__WEBPACK_IMPORTED_MODULE_0__["default"].ls(model.github.token, urlpath);
+            res = await _simplefs_js__WEBPACK_IMPORTED_MODULE_1__["default"].ls(model.github.token, urlpath);
 
         }
         else {
@@ -61141,46 +61493,47 @@ let control = {
 
             let urlpath = `/repos/${model.github.user.login
                 }/${repo}/contents/${p.join('/')}`
-            res = await _simplefs_js__WEBPACK_IMPORTED_MODULE_0__["default"].ls(model.github.token, urlpath);
+            res = await _simplefs_js__WEBPACK_IMPORTED_MODULE_1__["default"].ls(model.github.token, urlpath);
 
         }
 
         return res;
 
     },
-    async updatePathname(pathname = model.urlBar.params.pathname, push = true) {
+    async updatePathname(pathname = model.urlBar.params.pathname, push = true, ifUpdateFm = true) {
         model.urlBar.params.pathname = pathname;
         let res = await control.ls(pathname);  //if pathname is file ls() return a file object
         if (res.type === 'file') {
             let file = res;
-            let fileContent = await _simplefs_js__WEBPACK_IMPORTED_MODULE_0__["default"].cat(file);
+            let fileContent = await _simplefs_js__WEBPACK_IMPORTED_MODULE_1__["default"].cat(file);
             console.log(fileContent);
             control.openDocstr(fileContent)
             model.editor.currentFile = file;
 
             let tmp = pathname.split('/');
             tmp.pop();
-            pathname = tmp.join('/');
-            let flist = await control.ls(pathname)
-            model.fm.filedirDataList = flist;
+            let dirpath = tmp.join('/');
+            if (ifUpdateFm) {
+                let flist = await control.ls(dirpath)
+                model.fm.filedirDataList = flist;
+                model.fm.wd = dirpath;
+                fmView.render(fmView.fmContainer, {
+                    clickListener: control.openDoc
+                }, flist);
+            }
+
+        }
+        else {
+            model.fm.filedirDataList = res;
             model.fm.wd = pathname;
             fmView.render(fmView.fmContainer, {
                 clickListener: control.openDoc
             }, model.fm.filedirDataList);
-            return;
         }
-        model.fm.filedirDataList = res;
-        model.fm.wd = pathname;
-        fmView.render(fmView.fmContainer, {
-            clickListener: control.openDoc
-        }, model.fm.filedirDataList);
 
         if (push) {
             history.pushState({}, '', `?pathname=${pathname}`);
-
         }
-
-
     },
 
     openDocstr(str) {
@@ -61191,8 +61544,7 @@ let control = {
         if (file.type === 'file') {
             let repoName = file.html_url.split('/')[4];
             let pathname = `/${repoName}/${file.path}`;
-            control.updatePathname(pathname);
-
+            control.updatePathname(pathname, true, false);
         }
         else if (file.type === 'dir') {
             let repoName = file.html_url.split('/')[4];
@@ -61209,30 +61561,41 @@ let control = {
 
     async saveDoc(file, newContent) {
         if (model.editor.changed === false) {
-            console.log('doc not changed, return')
+            console.log('doc not changed')
             return;
         }
         console.log(`saveDoc(${file}),${newContent}`);
-        let encodedDoc = btoa(newContent);
-        console.log(`encodedDoc: ${encodedDoc}`);
-        let updatedFile = await _simplefs_js__WEBPACK_IMPORTED_MODULE_0__["default"].update(model.github.token, file.url, btoa(newContent));
+        let encodedDoc = js_base64__WEBPACK_IMPORTED_MODULE_0__.Base64.encode(newContent);
+        // console.log(`encodedDoc: ${encodedDoc}`);
+        let updatedFile = await _simplefs_js__WEBPACK_IMPORTED_MODULE_1__["default"].update(model.github.token, file.url, encodedDoc);
         model.editor.changed = false;
         file.git_url = updatedFile.git_url;
+        for (const f of model.fm.filedirDataList) {
+            if (f.name === updatedFile.name) {
+                f.git_url = updatedFile.git_url;
+                f.sha = updatedFile.sha;
+                fmView.fmContainer.innerHTML = '';
+                setTimeout(() => {
+                    fmView.init();
+                }, 1000);
+                return;
+            }
+        }
 
     },
     async updateGithubInfo() {
-        model.github.token = _utils_js__WEBPACK_IMPORTED_MODULE_4__["default"].getObjFromStorage('setting')['github_token'] || '';
+        model.github.token = _utils_js__WEBPACK_IMPORTED_MODULE_5__["default"].getObjFromStorage('setting')['github_token'] || '';
         if (!model.github.token) {
             console.log('updateGithubInfo: no github token return');
             return;
         }
-        let user = await _simplefs_js__WEBPACK_IMPORTED_MODULE_0__["default"].getUser(model.github.token);
+        let user = await _simplefs_js__WEBPACK_IMPORTED_MODULE_1__["default"].getUser(model.github.token);
         if (!user) {
             console.log('updateGithubInfo: seems bad github token try relogin return');
             return;
         }
         model.github = { ...model.github, ...{ user: user } };
-        model.fm.filedirDataList = await _simplefs_js__WEBPACK_IMPORTED_MODULE_0__["default"].ls(model.github.token, model.github.currentRepoPath);
+        model.fm.filedirDataList = await _simplefs_js__WEBPACK_IMPORTED_MODULE_1__["default"].ls(model.github.token, model.github.currentRepoPath);
         model.fm.fs = {
             '/': await control.ls('/')
         }
@@ -61243,7 +61606,7 @@ let control = {
 
         setInterval(() => {
             console.log('inervalRunner:');
-            this.saveDoc(model.editor.currentFile, model.editor.value);
+            // this.saveDoc(model.editor.currentFile, model.editor.value);
         }, interval);
     }
     ,
@@ -61257,7 +61620,7 @@ let control = {
         window.model = model
         window.control = control;
         window.editorView = editorView;
-        window.simplefs = _simplefs_js__WEBPACK_IMPORTED_MODULE_0__["default"];
+        window.simplefs = _simplefs_js__WEBPACK_IMPORTED_MODULE_1__["default"];
 
         let debugDiv = document.getElementById('debug');
         window.debugButton = document.getElementById('debugButton');
@@ -61272,12 +61635,12 @@ let control = {
         debugButton.addEventListener('click', evt => {
             console.log("debugbutton click");
             // control.saveDoc(model.editor.currentFile, model.editor.value)
-            _simplefs_js__WEBPACK_IMPORTED_MODULE_0__["default"].ls(model.github.token, 'https://api.github.com/users/suisuyy/repos');
+            // simplefs.ls(model.github.token, 'https://api.github.com/users/suisuyy/repos');
         });
 
         setTimeout(() => {
-            control.ls('/');
-            control.ls('/Github-API-Testing');
+            // control.ls('/');
+            // control.ls('/Github-API-Testing');
         }, 5000);
     }
 }

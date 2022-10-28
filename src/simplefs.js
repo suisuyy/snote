@@ -1,8 +1,10 @@
 import { Octokit } from '@octokit/core/';
+import utils from './utils.js';
 // import { Octokit } from "/public/lib/@octokit/core/dist-web";
 
 
 import CONSTANT from "./constant.js"
+import { Base64 } from 'js-base64';
 
 
 
@@ -21,6 +23,7 @@ async function main(t) {
 
 // Between 1 - 100 MB: Only the raw or object custom media types are supported.Both will work as normal, except that when using the object media type, the content field will be an empty string and the encoding field will be "none".To get the contents of these larger files, use the raw media type.
 async function ls(token, repopath) {
+    repopath = repopath + `?${Math.random()}`
     console.log(`ls('${token}', '${repopath}')`)
 
     const octokit = new Octokit({
@@ -30,7 +33,7 @@ async function ls(token, repopath) {
     let { data: res } = await octokit.request(`GET ${repopath}`)
     if (res.length === undefined) {
         //if res.length undefined,this means its a file
-        console.log(repopath, res)
+        console.log(repopath, res, Base64.decode(res.content));
 
         return res;
     }
@@ -73,9 +76,9 @@ async function cat(file) {
 
     let res = await (await fetch(file.git_url, { cache: "no-cache" })).json();
     console.log(`finish cat(${file})`, res);
-    let doc = atob(res.content);
+    let doc = Base64.decode(res.content);
     if (doc) {
-        console.log(`finish cat(${file.git_url})`, doc);
+        console.log(`finish simplefs.cat(${file.git_url})`, file.sha);
         return doc;
     }
 

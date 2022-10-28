@@ -14,8 +14,18 @@ function updateObjInStroge(name, newObj) {
     setObjToStorage(name, { ...oldObj, ...newObj });
 }
 
+function utf8_to_b64(str) {
+    return window.btoa(unescape(encodeURIComponent(str)));
+}
+
+function b64_to_utf8(str) {
+    return decodeURIComponent(escape(window.atob(str)));
+}
+
 export default {
     getObjFromStorage,
     setObjToStorage,
     updateObjInStroge,
+    utf8_to_b64,
+    b64_to_utf8,
 }

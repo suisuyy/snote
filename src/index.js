@@ -8,7 +8,7 @@ import {
     javascriptLanguage,
     scopeCompletionSource,
 } from '@codemirror/lang-javascript';
-
+import { Base64 } from 'js-base64';
 
 import simplefs from "./simplefs.js";
 import editor from "./editor.js";
@@ -52,7 +52,8 @@ let model = {
         filedirDataList: {
 
         }
-    }
+    },
+    saveTimeoutID: 0,
 }
 
 
@@ -90,7 +91,7 @@ let fmView = {
     },
     async render(container, listenerFunctions, fList) {
         this.fmContainer.innerHTML = '';
-        sfm.createDirFileList(fList || await control.ls(), container, listenerFunctions);
+        sfm.createDirFileList(fList || model.fm.filedirDataList, container, listenerFunctions);
     }
 }
 
@@ -165,6 +166,10 @@ let control = {
             // console.log(newDocstr);
             model.editor.value = newDocstr;
             model.editor.changed = true;
+            clearTimeout(model.saveTimeoutID);
+            model.saveTimeoutID = setTimeout(() => {
+                control.saveDoc(model.editor.currentFile, model.editor.value);
+            }, 3000);
         },
 
         cursorListener() {
@@ -224,7 +229,7 @@ let control = {
         return res;
 
     },
-    async updatePathname(pathname = model.urlBar.params.pathname, push = true) {
+    async updatePathname(pathname = model.urlBar.params.pathname, push = true, ifUpdateFm = true) {
         model.urlBar.params.pathname = pathname;
         let res = await control.ls(pathname);  //if pathname is file ls() return a file object
         if (res.type === 'file') {
@@ -236,27 +241,28 @@ let control = {
 
             let tmp = pathname.split('/');
             tmp.pop();
-            pathname = tmp.join('/');
-            let flist = await control.ls(pathname)
-            model.fm.filedirDataList = flist;
+            let dirpath = tmp.join('/');
+            if (ifUpdateFm) {
+                let flist = await control.ls(dirpath)
+                model.fm.filedirDataList = flist;
+                model.fm.wd = dirpath;
+                fmView.render(fmView.fmContainer, {
+                    clickListener: control.openDoc
+                }, flist);
+            }
+
+        }
+        else {
+            model.fm.filedirDataList = res;
             model.fm.wd = pathname;
             fmView.render(fmView.fmContainer, {
                 clickListener: control.openDoc
             }, model.fm.filedirDataList);
-            return;
         }
-        model.fm.filedirDataList = res;
-        model.fm.wd = pathname;
-        fmView.render(fmView.fmContainer, {
-            clickListener: control.openDoc
-        }, model.fm.filedirDataList);
 
         if (push) {
             history.pushState({}, '', `?pathname=${pathname}`);
-
         }
-
-
     },
 
     openDocstr(str) {
@@ -267,8 +273,7 @@ let control = {
         if (file.type === 'file') {
             let repoName = file.html_url.split('/')[4];
             let pathname = `/${repoName}/${file.path}`;
-            control.updatePathname(pathname);
-
+            control.updatePathname(pathname, true, false);
         }
         else if (file.type === 'dir') {
             let repoName = file.html_url.split('/')[4];
@@ -285,15 +290,26 @@ let control = {
 
     async saveDoc(file, newContent) {
         if (model.editor.changed === false) {
-            console.log('doc not changed, return')
+            console.log('doc not changed')
             return;
         }
         console.log(`saveDoc(${file}),${newContent}`);
-        let encodedDoc = btoa(newContent);
-        console.log(`encodedDoc: ${encodedDoc}`);
-        let updatedFile = await simplefs.update(model.github.token, file.url, btoa(newContent));
+        let encodedDoc = Base64.encode(newContent);
+        // console.log(`encodedDoc: ${encodedDoc}`);
+        let updatedFile = await simplefs.update(model.github.token, file.url, encodedDoc);
         model.editor.changed = false;
         file.git_url = updatedFile.git_url;
+        for (const f of model.fm.filedirDataList) {
+            if (f.name === updatedFile.name) {
+                f.git_url = updatedFile.git_url;
+                f.sha = updatedFile.sha;
+                fmView.fmContainer.innerHTML = '';
+                setTimeout(() => {
+                    fmView.init();
+                }, 1000);
+                return;
+            }
+        }
 
     },
     async updateGithubInfo() {
@@ -319,7 +335,7 @@ let control = {
 
         setInterval(() => {
             console.log('inervalRunner:');
-            this.saveDoc(model.editor.currentFile, model.editor.value);
+            // this.saveDoc(model.editor.currentFile, model.editor.value);
         }, interval);
     }
     ,
@@ -348,12 +364,12 @@ let control = {
         debugButton.addEventListener('click', evt => {
             console.log("debugbutton click");
             // control.saveDoc(model.editor.currentFile, model.editor.value)
-            simplefs.ls(model.github.token, 'https://api.github.com/users/suisuyy/repos');
+            // simplefs.ls(model.github.token, 'https://api.github.com/users/suisuyy/repos');
         });
 
         setTimeout(() => {
-            control.ls('/');
-            control.ls('/Github-API-Testing');
+            // control.ls('/');
+            // control.ls('/Github-API-Testing');
         }, 5000);
     }
 }

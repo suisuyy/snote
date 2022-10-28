@@ -19,7 +19,7 @@ async function createDirFileList(fArray, element, listenerFunctions) {
 
     for (const f of fArray) {
         let li = document.createElement('li');
-        li.innerHTML = f.name;
+        li.innerHTML = f.name + '   ' + f.sha;
         li.classList.add(['fli'])
         if (f.type === 'dir') {
             li.classList.add('dirli')
