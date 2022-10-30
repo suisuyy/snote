@@ -1402,8 +1402,8 @@ const ENV = {
         repo_path: '/repos/suisuyy/Github-API-Testing/contents'
     },
     // corsproxy: 'https://thingproxy.freeboard.io/fetch',
-    corsproxy: 'https://corsp.suisuytest.workers.dev/?',
-    ghproxy:'https://ghproxy.com/'
+    corsproxy: 'https://corsp.suisuy.workers.dev/?',
+    ghproxy: 'https://ghproxy.com/'
 
 };
 
