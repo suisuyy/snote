@@ -18,7 +18,7 @@ console.log(`hello snote`)
 
 ```
 
-use github repo  as storage backend,edit your github repo directly
+use github repo  as storage backend,edit your github repo directly,save automatically by default
 
 the code is ugly,but... it works :)
 
