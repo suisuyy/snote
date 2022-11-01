@@ -11,7 +11,10 @@ double click to run javascript code quickly ,try double click next line
 
 write your js code like this,autocompletion supported
 ```javascript
-console.log()
+
+console.log(`hello snote`)
+
+
 ```
 
 use github repo  as storage backend,edit your github repo directly
