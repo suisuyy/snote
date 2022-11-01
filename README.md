@@ -1,4 +1,5 @@
 # snote
+
 a simple note web app for mobile devices 
 
 feat:
