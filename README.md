@@ -3,7 +3,7 @@ a simple note web app for mobile devices
 
 feat:
 
-markdown 
+markdown support
 
 double click to run javascript code quickly ,try double click next line
 
