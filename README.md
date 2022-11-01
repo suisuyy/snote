@@ -13,7 +13,7 @@ write your js code like this,autocompletion supported
 ```javascript
 
 console.log(`hello snote`)
-
+3*4
 
 ```
 
