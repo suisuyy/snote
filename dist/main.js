@@ -1402,11 +1402,14 @@ const ENV = {
         repo_path: '/repos/suisuyy/Github-API-Testing/contents'
     },
     // corsproxy: 'https://thingproxy.freeboard.io/fetch',
-    corsproxy: 'https://corsp.suisuy.workers.dev/?',
+    corsproxy: 'https://corsp.suisuy.eu.org?',
     ghproxy: 'https://ghproxy.com/'
 
 };
 
+const STRING = {
+    hello:"# Hello this Snote by Suisuy\nhere are some basic usage\ntry login first\n\n write you js code like this,\ntry to double click to run current line code\n```javascript\n3*4 //double click me\n```",
+}
 
 const B64STR = {
     test: "dGVzdA==",
@@ -1432,38 +1435,6 @@ const TESTDATA = {
             }
         },
         {
-            "name": "dir1",
-            "path": "dir1",
-            "sha": "9cab47b95085db2e9a6e42356162eb71bd0da472",
-            "size": 0,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/dir1?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/tree/main/dir1",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/trees/9cab47b95085db2e9a6e42356162eb71bd0da472",
-            "download_url": null,
-            "type": "dir",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/dir1?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/trees/9cab47b95085db2e9a6e42356162eb71bd0da472",
-                "html": "https://github.com/suisuyy/Github-API-Testing/tree/main/dir1"
-            }
-        },
-        {
-            "name": "repos",
-            "path": "repos",
-            "sha": "ef33568ab286df11142e1b7b669ad56f931bb489",
-            "size": 0,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/repos?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/tree/main/repos",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/trees/ef33568ab286df11142e1b7b669ad56f931bb489",
-            "download_url": null,
-            "type": "dir",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/repos?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/trees/ef33568ab286df11142e1b7b669ad56f931bb489",
-                "html": "https://github.com/suisuyy/Github-API-Testing/tree/main/repos"
-            }
-        },
-        {
             "name": "anewfile",
             "path": "anewfile",
             "sha": "5ddc2beda58b9ace39bc3525fe6e1e1585312d03",
@@ -1479,300 +1450,14 @@ const TESTDATA = {
                 "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/anewfile"
             }
         },
-        {
-            "name": "atest4",
-            "path": "atest4",
-            "sha": "7284ab4d2836271d66b988ae7d037bd6ef0d5d15",
-            "size": 4,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/atest4?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/atest4",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/7284ab4d2836271d66b988ae7d037bd6ef0d5d15",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/atest4",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/atest4?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/7284ab4d2836271d66b988ae7d037bd6ef0d5d15",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/atest4"
-            }
-        },
-        {
-            "name": "bnewfile",
-            "path": "bnewfile",
-            "sha": "3170e4387a5e4451c177c1fd96ae6e59737c6d43",
-            "size": 10,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/bnewfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/bnewfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/3170e4387a5e4451c177c1fd96ae6e59737c6d43",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/bnewfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/bnewfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/3170e4387a5e4451c177c1fd96ae6e59737c6d43",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/bnewfile"
-            }
-        },
-        {
-            "name": "dnewfile",
-            "path": "dnewfile",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/dnewfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/dnewfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/dnewfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/dnewfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/dnewfile"
-            }
-        },
-        {
-            "name": "enewfile",
-            "path": "enewfile",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/enewfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/enewfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/enewfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/enewfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/enewfile"
-            }
-        },
-        {
-            "name": "fnewfile",
-            "path": "fnewfile",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/fnewfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/fnewfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/fnewfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/fnewfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/fnewfile"
-            }
-        },
-        {
-            "name": "gnewfile",
-            "path": "gnewfile",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/gnewfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/gnewfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/gnewfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/gnewfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/gnewfile"
-            }
-        },
-        {
-            "name": "hnewfile",
-            "path": "hnewfile",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/hnewfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/hnewfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/hnewfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/hnewfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/hnewfile"
-            }
-        },
-        {
-            "name": "inewfile",
-            "path": "inewfile",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/inewfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/inewfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/inewfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/inewfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/inewfile"
-            }
-        },
-        {
-            "name": "jnewfile",
-            "path": "jnewfile",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/jnewfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/jnewfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/jnewfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/jnewfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/jnewfile"
-            }
-        },
-        {
-            "name": "knewfile",
-            "path": "knewfile",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/knewfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/knewfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/knewfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/knewfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/knewfile"
-            }
-        },
-        {
-            "name": "lnewfile",
-            "path": "lnewfile",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/lnewfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/lnewfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/lnewfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/lnewfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/lnewfile"
-            }
-        },
-        {
-            "name": "mnewfile",
-            "path": "mnewfile",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/mnewfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/mnewfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/mnewfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/mnewfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/mnewfile"
-            }
-        },
-        {
-            "name": "newfile",
-            "path": "newfile",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/newfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/newfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/newfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/newfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/newfile"
-            }
-        },
-        {
-            "name": "nnewfile",
-            "path": "nnewfile",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/nnewfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/nnewfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/nnewfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/nnewfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/nnewfile"
-            }
-        },
-        {
-            "name": "onewfile",
-            "path": "onewfile",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/onewfile?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/onewfile",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/onewfile",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/onewfile?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/onewfile"
-            }
-        },
-        {
-            "name": "test2",
-            "path": "test2",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/test2?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/test2",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/test2",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/test2?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/test2"
-            }
-        },
-        {
-            "name": "test3",
-            "path": "test3",
-            "sha": "0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "size": 20,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/test3?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/test3",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/test3",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/test3?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/0d5a690c8fad5e605a6e8766295d9d459d65de42",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/test3"
-            }
-        },
-        {
-            "name": "test4",
-            "path": "test4",
-            "sha": "7284ab4d2836271d66b988ae7d037bd6ef0d5d15",
-            "size": 4,
-            "url": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/test4?ref=main",
-            "html_url": "https://github.com/suisuyy/Github-API-Testing/blob/main/test4",
-            "git_url": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/7284ab4d2836271d66b988ae7d037bd6ef0d5d15",
-            "download_url": "https://raw.githubusercontent.com/suisuyy/Github-API-Testing/main/test4",
-            "type": "file",
-            "_links": {
-                "self": "https://api.github.com/repos/suisuyy/Github-API-Testing/contents/test4?ref=main",
-                "git": "https://api.github.com/repos/suisuyy/Github-API-Testing/git/blobs/7284ab4d2836271d66b988ae7d037bd6ef0d5d15",
-                "html": "https://github.com/suisuyy/Github-API-Testing/blob/main/test4"
-            }
-        }
+     
+       
     ]
 }
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({ ENV, B64STR, TESTDATA });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({ ENV, B64STR, TESTDATA,STRING });
 
 /***/ }),
 
@@ -1832,7 +1517,7 @@ function createMDEditor(element, doc, listenerFunctions) {
     // for code blocks, using @codemirror/language-data to
     // look up the appropriate dynamic import.
     let editroInitState = {
-        doc: doc || "# Hello this Snote by Suisuy\nhere are some basic usage\ntry login first\n\n write you js code like this,\ntry to double click to run current line code\n```javascript\n3*4 //double click me\n```",
+        doc: doc,
         extensions: [
             codemirror__WEBPACK_IMPORTED_MODULE_1__.basicSetup,
             codemirror__WEBPACK_IMPORTED_MODULE_0__.keymap.of([_codemirror_commands__WEBPACK_IMPORTED_MODULE_2__.indentWithTab]),
@@ -1893,7 +1578,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function main() {
-    createDirFileList(_constant_js__WEBPACK_IMPORTED_MODULE_0__["default"].TESTDATA.fiterms, document.querySelector("#fm"));
+    // createDirFileList(CONSTANT.TESTDATA.fiterms, document.querySelector("#fm"));
 }
 
 
@@ -1909,7 +1594,7 @@ async function createDirFileList(fArray, element, listenerFunctions) {
 
     for (const f of fArray) {
         let li = document.createElement('li');
-        li.innerHTML = f.name + '   ' + f.sha;
+        li.innerHTML = f.name;
         li.classList.add(['fli'])
         if (f.type === 'dir') {
             li.classList.add('dirli')
@@ -61287,6 +60972,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 console.log(_constant_js__WEBPACK_IMPORTED_MODULE_3__["default"].ENV.github_app)
 
 let model = {
@@ -61327,12 +61013,23 @@ let model = {
     saveTimeoutID: 0,
 }
 
-
+let spinerView = {
+    init() {
+        this.spinerContainer = document.querySelector(".spiner");
+        this.hide();
+    },
+    hide() {
+        this.spinerContainer.classList.add(['hidden']);
+    },
+    show() {
+        this.spinerContainer.classList.remove(['hidden']);
+    }
+}
 
 let editorView = {
     init() {
         this.editorContainer = document.querySelector("#editor");
-        this.render(this.editorContainer);
+        this.render(this.editorContainer, _constant_js__WEBPACK_IMPORTED_MODULE_3__["default"].STRING.hello);
 
         let touchtime = 0;
         this.editorContainer.addEventListener('click', (e) => {
@@ -61410,13 +61107,16 @@ let control = {
 
         await this.initModel();
 
+        spinerView.init();
         editorView.init();
         fmView.init();
         MenuView.init();
         urlView.init();
 
         if (model.urlBar.params.pathname) {
+            spinerView.show();
             control.updatePathname();
+            spinerView.hide();
         }
         this.intervalRunner(30000)
     },
@@ -61428,6 +61128,7 @@ let control = {
         if (new URL(location.href).searchParams.get("code")) {
             console.log('try to get token');
             await this.getTokenByCode(new URL(location.href).searchParams.get("code"));
+            history.pushState({}, '', `?pathname=/`);
 
         }
         await control.updateGithubInfo();
@@ -61470,6 +61171,8 @@ let control = {
             console.log('gotTokenBycode: ' + resObj?.access_token)
 
             _utils_js__WEBPACK_IMPORTED_MODULE_5__["default"].updateObjInStroge('setting', { github_token: resObj.access_token })
+
+
         }
         else {
             console.log('faild to get token');
@@ -61501,6 +61204,7 @@ let control = {
 
     },
     async updatePathname(pathname = model.urlBar.params.pathname, push = true, ifUpdateFm = true) {
+        spinerView.show();
         model.urlBar.params.pathname = pathname;
         let res = await control.ls(pathname);  //if pathname is file ls() return a file object
         if (res.type === 'file') {
@@ -61534,6 +61238,8 @@ let control = {
         if (push) {
             history.pushState({}, '', `?pathname=${pathname}`);
         }
+        spinerView.hide();
+
     },
 
     openDocstr(str) {
@@ -61560,8 +61266,10 @@ let control = {
     },
 
     async saveDoc(file, newContent) {
+        spinerView.show();
         if (model.editor.changed === false) {
             console.log('doc not changed')
+            spinerView.hide();
             return;
         }
         console.log(`saveDoc(${file}),${newContent}`);
@@ -61569,6 +61277,7 @@ let control = {
         // console.log(`encodedDoc: ${encodedDoc}`);
         let updatedFile = await _simplefs_js__WEBPACK_IMPORTED_MODULE_1__["default"].update(model.github.token, file.url, encodedDoc);
         model.editor.changed = false;
+        spinerView.hide();
         file.git_url = updatedFile.git_url;
         for (const f of model.fm.filedirDataList) {
             if (f.name === updatedFile.name) {
@@ -61595,7 +61304,7 @@ let control = {
             return;
         }
         model.github = { ...model.github, ...{ user: user } };
-        model.fm.filedirDataList = await _simplefs_js__WEBPACK_IMPORTED_MODULE_1__["default"].ls(model.github.token, model.github.currentRepoPath);
+        model.fm.filedirDataList = await control.ls('/');
         model.fm.fs = {
             '/': await control.ls('/')
         }
@@ -61621,6 +61330,7 @@ let control = {
         window.control = control;
         window.editorView = editorView;
         window.simplefs = _simplefs_js__WEBPACK_IMPORTED_MODULE_1__["default"];
+        window.spinerView = spinerView;
 
         let debugDiv = document.getElementById('debug');
         window.debugButton = document.getElementById('debugButton');

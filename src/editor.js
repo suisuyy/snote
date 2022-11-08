@@ -41,7 +41,7 @@ function createMDEditor(element, doc, listenerFunctions) {
     // for code blocks, using @codemirror/language-data to
     // look up the appropriate dynamic import.
     let editroInitState = {
-        doc: doc || "# Hello this Snote by Suisuy\nhere are some basic usage\ntry login first\n\n write you js code like this,\ntry to double click to run current line code\n```javascript\n3*4 //double click me\n```",
+        doc: doc,
         extensions: [
             basicSetup,
             keymap.of([indentWithTab]),

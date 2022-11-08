@@ -48,3 +48,16 @@
 .rightAligned {
     right: 0;
 }
+
+.spiner {
+    width: 3em;
+    height: 3em;
+    position: fixed;
+    right: 0;
+    top: 0;
+}
+
+.spiner>img {
+    width: inherit;
+    height: inherit;
+}

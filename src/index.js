@@ -15,6 +15,7 @@ import editor from "./editor.js";
 import CONSTANT from './constant.js'
 import sfm from './sfm'
 import utils from "./utils.js"
+import constant from './constant.js';
 
 console.log(CONSTANT.ENV.github_app)
 
@@ -56,12 +57,23 @@ let model = {
     saveTimeoutID: 0,
 }
 
-
+let spinerView = {
+    init() {
+        this.spinerContainer = document.querySelector(".spiner");
+        this.hide();
+    },
+    hide() {
+        this.spinerContainer.classList.add(['hidden']);
+    },
+    show() {
+        this.spinerContainer.classList.remove(['hidden']);
+    }
+}
 
 let editorView = {
     init() {
         this.editorContainer = document.querySelector("#editor");
-        this.render(this.editorContainer);
+        this.render(this.editorContainer, constant.STRING.hello);
 
         let touchtime = 0;
         this.editorContainer.addEventListener('click', (e) => {
@@ -139,13 +151,16 @@ let control = {
 
         await this.initModel();
 
+        spinerView.init();
         editorView.init();
         fmView.init();
         MenuView.init();
         urlView.init();
 
         if (model.urlBar.params.pathname) {
+            spinerView.show();
             control.updatePathname();
+            spinerView.hide();
         }
         this.intervalRunner(30000)
     },
@@ -157,6 +172,7 @@ let control = {
         if (new URL(location.href).searchParams.get("code")) {
             console.log('try to get token');
             await this.getTokenByCode(new URL(location.href).searchParams.get("code"));
+            history.pushState({}, '', `?pathname=/`);
 
         }
         await control.updateGithubInfo();
@@ -199,6 +215,8 @@ let control = {
             console.log('gotTokenBycode: ' + resObj?.access_token)
 
             utils.updateObjInStroge('setting', { github_token: resObj.access_token })
+
+
         }
         else {
             console.log('faild to get token');
@@ -230,6 +248,7 @@ let control = {
 
     },
     async updatePathname(pathname = model.urlBar.params.pathname, push = true, ifUpdateFm = true) {
+        spinerView.show();
         model.urlBar.params.pathname = pathname;
         let res = await control.ls(pathname);  //if pathname is file ls() return a file object
         if (res.type === 'file') {
@@ -263,6 +282,8 @@ let control = {
         if (push) {
             history.pushState({}, '', `?pathname=${pathname}`);
         }
+        spinerView.hide();
+
     },
 
     openDocstr(str) {
@@ -289,8 +310,10 @@ let control = {
     },
 
     async saveDoc(file, newContent) {
+        spinerView.show();
         if (model.editor.changed === false) {
             console.log('doc not changed')
+            spinerView.hide();
             return;
         }
         console.log(`saveDoc(${file}),${newContent}`);
@@ -298,6 +321,7 @@ let control = {
         // console.log(`encodedDoc: ${encodedDoc}`);
         let updatedFile = await simplefs.update(model.github.token, file.url, encodedDoc);
         model.editor.changed = false;
+        spinerView.hide();
         file.git_url = updatedFile.git_url;
         for (const f of model.fm.filedirDataList) {
             if (f.name === updatedFile.name) {
@@ -324,7 +348,7 @@ let control = {
             return;
         }
         model.github = { ...model.github, ...{ user: user } };
-        model.fm.filedirDataList = await simplefs.ls(model.github.token, model.github.currentRepoPath);
+        model.fm.filedirDataList = await control.ls('/');
         model.fm.fs = {
             '/': await control.ls('/')
         }
@@ -350,6 +374,7 @@ let control = {
         window.control = control;
         window.editorView = editorView;
         window.simplefs = simplefs;
+        window.spinerView = spinerView;
 
         let debugDiv = document.getElementById('debug');
         window.debugButton = document.getElementById('debugButton');
